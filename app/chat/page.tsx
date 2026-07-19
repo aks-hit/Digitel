@@ -136,7 +136,7 @@ export default function ChatPage() {
                 }`}
               >
                 <p className="text-sm text-white leading-relaxed whitespace-pre-wrap">{msg.content}</p>
-                <p className="text-[10px] text-white/40 mt-1">
+                <p suppressHydrationWarning className="text-[10px] text-white/40 mt-1">
                   {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
               </div>

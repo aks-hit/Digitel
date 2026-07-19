@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AssessmentData } from '@/lib/business-rules';
 import { buildChatPrompt } from '@/lib/prompts';
+import { GoogleGenAI } from '@google/genai';
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,7 +10,6 @@ export async function POST(request: NextRequest) {
 
     if (apiKey) {
       try {
-        const { GoogleGenAI } = await import('@google/genai');
         const ai = new GoogleGenAI({ apiKey });
         const prompt = buildChatPrompt(
           assessment as AssessmentData,
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     } else if (lowerMsg.includes('cost') || lowerMsg.includes('price') || lowerMsg.includes('budget') || lowerMsg.includes('save')) {
       reply = `Your recommended bundle is designed to stay within your ₹${(assessment as AssessmentData)?.monthlyBudget || 3000}/month budget. The bundle pricing saves you approximately 18% compared to subscribing to each service individually. That's about ₹${Math.round(((assessment as AssessmentData)?.monthlyBudget || 3000) * 0.18 * 12).toLocaleString()}/year in savings while getting more services than you'd typically afford separately.`;
     } else if (lowerMsg.includes('why') || lowerMsg.includes('recommend')) {
-      reply = `Every recommendation is tailored to your specific profile. As a "${(assessment as AssessmentData)?.wfh ? 'Remote Professional' : 'Digital Family'}" household in ${(assessment as AssessmentData)?.city || 'your city'}, our AI considers your ${(assessment as AssessmentData)?.familySize || 'family'}-member household, ${(assessment as AssessmentData)?.numDevices || 'multiple'} devices, ${(assessment as AssessmentData)?.hasKids ? "children\u0027s safety needs, " : ''}and ₹${(assessment as AssessmentData)?.monthlyBudget || 3000}/month budget. The business rules engine ensures critical needs are covered first, then Gemini AI optimizes for maximum value.`;
+      reply = `Every recommendation is tailored to your specific profile. As a "${(assessment as AssessmentData)?.wfh ? 'Remote Professional' : 'Digital Family'}" household in ${(assessment as AssessmentData)?.city || 'your city'}, our AI considers your ${(assessment as AssessmentData)?.familySize || 'family'}-member household, ${(assessment as AssessmentData)?.numDevices || 'multiple'} devices, ${(assessment as AssessmentData)?.hasKids ? "children's safety needs, " : ""}and ₹${(assessment as AssessmentData)?.monthlyBudget || 3000}/month budget. The business rules engine ensures critical needs are covered first, then Gemini AI optimizes for maximum value.`;
     } else if (lowerMsg.includes('upgrade') || lowerMsg.includes('better') || lowerMsg.includes('improve')) {
       reply = `To improve your Digital Home Score, I'd prioritize: 1) ${(assessment as AssessmentData)?.currentServices?.includes('fiber') ? 'Upgrading to a faster fiber tier' : 'Getting DigiTel Fiber for reliable connectivity'}, 2) Adding comprehensive security coverage, and 3) ${(assessment as AssessmentData)?.currentServices?.includes('ott') ? 'Upgrading your OTT bundle' : 'Getting our OTT bundle for entertainment'}. Each upgrade directly improves your category scores and overall household score.`;
     } else {

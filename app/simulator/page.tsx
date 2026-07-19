@@ -257,7 +257,7 @@ export default function SimulatorPage() {
                     borderRadius: '12px',
                     color: '#f1f5f9',
                   }}
-                  formatter={(value: number) => [`₹${value} Cr`, '']}
+                  formatter={(value: any) => [`₹${value} Cr`, '']}
                 />
                 <Bar dataKey="current" fill="#64748b" radius={[4, 4, 0, 0]} name="Current" />
                 <Bar dataKey="projected" fill="#06b6d4" radius={[4, 4, 0, 0]} name="Projected" />
@@ -281,7 +281,7 @@ export default function SimulatorPage() {
                     borderRadius: '12px',
                     color: '#f1f5f9',
                   }}
-                  formatter={(value: number) => [`${value}%`, '']}
+                  formatter={(value: any) => [`${value}%`, '']}
                 />
                 <Line
                   type="monotone"

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AssessmentData, applyBusinessRules, calculateHomeScore } from '@/lib/business-rules';
 import { buildRecommendationPrompt } from '@/lib/prompts';
+import { GoogleGenAI } from '@google/genai';
 
 // Fallback recommendations when Gemini API is unavailable
 function generateFallbackRecommendation(data: AssessmentData) {
@@ -127,20 +128,21 @@ export async function POST(request: NextRequest) {
 
     if (apiKey) {
       try {
-        const { GoogleGenAI } = await import('@google/genai');
         const ai = new GoogleGenAI({ apiKey });
         const prompt = buildRecommendationPrompt(data);
 
         const response = await ai.models.generateContent({
           model: 'gemini-2.5-flash',
           contents: prompt,
+          config: {
+            responseMimeType: 'application/json',
+          },
         });
 
         const text = response.text || '';
-        // Try to parse the JSON from Gemini response
-        const jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          const aiResult = JSON.parse(jsonMatch[0]);
+        // Because of responseMimeType, we can safely parse directly
+        try {
+          const aiResult = JSON.parse(text);
           const score = calculateHomeScore(data);
           const rules = applyBusinessRules(data);
           return NextResponse.json({
@@ -148,6 +150,9 @@ export async function POST(request: NextRequest) {
             homeScore: score,
             businessRules: rules,
           });
+        } catch (parseError) {
+          console.error('Failed to parse Gemini JSON:', text);
+          throw parseError; // trigger fallback
         }
       } catch (aiError) {
         console.error('Gemini API error, using fallback:', aiError);

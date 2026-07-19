@@ -32,67 +32,65 @@ import {
 
 const KPIs = [
   {
-    label: 'Annual Revenue',
-    value: '₹5,640 Cr',
-    change: '+20%',
+    label: 'Total WTH Revenue',
+    value: '₹6,800 Cr',
+    change: 'FY24 Actual',
     trend: 'up',
     icon: IndianRupee,
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-500/10',
   },
   {
-    label: 'Avg CLV',
-    value: '₹1,18,000',
-    change: '+35%',
+    label: 'Target Contribution',
+    value: '20%',
+    change: 'by FY29',
     trend: 'up',
     icon: TrendingUp,
     color: 'text-cyan-400',
     bgColor: 'bg-cyan-500/10',
   },
   {
-    label: 'Cross-sell Rate',
-    value: '27.3%',
-    change: '+12%',
+    label: 'Investment Budget',
+    value: '₹2,500 Cr',
+    change: 'Over 3 Yrs',
     trend: 'up',
-    icon: ShoppingCart,
+    icon: Layers,
     color: 'text-purple-400',
     bgColor: 'bg-purple-500/10',
   },
   {
-    label: 'NPS Score',
-    value: '72',
-    change: '+18',
+    label: 'Target CLV (3+ Prod)',
+    value: '₹18,000',
+    change: '+227% vs 1 Prod',
     trend: 'up',
-    icon: ThumbsUp,
+    icon: ShoppingCart,
     color: 'text-blue-400',
     bgColor: 'bg-blue-500/10',
   },
   {
-    label: 'Churn Rate',
-    value: '9.2%',
-    change: '-5.8%',
+    label: 'Target Churn',
+    value: '5%',
+    change: 'With 3+ Products',
     trend: 'down',
-    icon: Users,
+    icon: TrendingDown,
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-500/10',
   },
   {
-    label: 'Products/HH',
-    value: '3.2',
-    change: '+1.8',
+    label: 'Home Surveillance',
+    value: '₹350 Cr',
+    change: 'Highest Growth',
     trend: 'up',
-    icon: Layers,
+    icon: Zap,
     color: 'text-amber-400',
     bgColor: 'bg-amber-500/10',
   },
 ];
 
 const revenueByService = [
-  { name: 'Fiber', value: 2100, color: '#06b6d4' },
-  { name: 'OTT', value: 1200, color: '#3b82f6' },
-  { name: 'Security', value: 980, color: '#8b5cf6' },
-  { name: 'Cyber', value: 560, color: '#10b981' },
-  { name: 'Smart Home', value: 800, color: '#f59e0b' },
+  { name: 'Broadband', value: 4100, color: '#06b6d4' },
+  { name: 'DTH', value: 2350, color: '#f59e0b' },
+  { name: 'Surveillance', value: 350, color: '#8b5cf6' },
 ];
 
 const monthlyRevenueTrend = [
@@ -108,11 +106,8 @@ const monthlyRevenueTrend = [
 ];
 
 const personaDistribution = [
-  { name: 'Digital Family', value: 35, color: '#06b6d4' },
-  { name: 'Remote Professional', value: 25, color: '#3b82f6' },
-  { name: 'Premium Smart Home', value: 15, color: '#8b5cf6' },
-  { name: 'Budget Conscious', value: 15, color: '#f59e0b' },
-  { name: 'Senior Care', value: 10, color: '#10b981' },
+  { name: 'Aspirer Homes (HV2)', value: 40, color: '#3b82f6' },
+  { name: 'Premium Homes (HV1)', value: 10, color: '#8b5cf6' },
 ];
 
 const aiMetrics = [
@@ -258,7 +253,7 @@ export default function ExecutivePage() {
                     borderRadius: '12px',
                     color: '#f1f5f9',
                   }}
-                  formatter={(value: number) => [`${value}%`, '']}
+                  formatter={(value: any) => [`${value}%`, '']}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -294,7 +289,7 @@ export default function ExecutivePage() {
                     borderRadius: '12px',
                     color: '#f1f5f9',
                   }}
-                  formatter={(value: number) => [`₹${value} Cr`, '']}
+                  formatter={(value: any) => [`₹${value} Cr`, '']}
                 />
                 <Bar dataKey="value" radius={[0, 6, 6, 0]} name="Revenue">
                   {revenueByService.map((entry, index) => (

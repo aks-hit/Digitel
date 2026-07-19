@@ -58,10 +58,10 @@ const FEATURES = [
 ];
 
 const STATS = [
-  { value: '20M+', label: 'Households Served' },
-  { value: '35%', label: 'CLV Increase' },
-  { value: '<10%', label: 'Target Churn' },
-  { value: '3+', label: 'Products/Home' },
+  { value: '20M+', label: 'Households Reached' },
+  { value: '₹18,000', label: 'Target CLV/yr' },
+  { value: '5%', label: 'Target Churn' },
+  { value: '₹2,500Cr', label: 'Investment Budget' },
 ];
 
 const JOURNEY_STEPS = [
@@ -247,20 +247,20 @@ export default function LandingPage() {
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
-                  <div className="text-2xl font-bold text-emerald-400">+20%</div>
-                  <div className="text-sm text-slate-400">Revenue Growth FY29</div>
+                  <div className="text-2xl font-bold text-emerald-400">20%</div>
+                  <div className="text-sm text-slate-400">Revenue Target FY29</div>
                 </div>
                 <div className="p-4 rounded-xl bg-cyan-500/5 border border-cyan-500/10">
-                  <div className="text-2xl font-bold text-cyan-400">+35%</div>
-                  <div className="text-sm text-slate-400">CLV Increase</div>
+                  <div className="text-2xl font-bold text-cyan-400">₹2,500Cr</div>
+                  <div className="text-sm text-slate-400">Investment Budget</div>
                 </div>
                 <div className="p-4 rounded-xl bg-purple-500/5 border border-purple-500/10">
-                  <div className="text-2xl font-bold text-purple-400">&gt;25%</div>
-                  <div className="text-sm text-slate-400">Cross-sell Rate</div>
+                  <div className="text-2xl font-bold text-purple-400">28%</div>
+                  <div className="text-sm text-slate-400">OTT Take Rate</div>
                 </div>
                 <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10">
-                  <div className="text-2xl font-bold text-amber-400">&lt;10%</div>
-                  <div className="text-sm text-slate-400">Churn Target</div>
+                  <div className="text-2xl font-bold text-amber-400">5%</div>
+                  <div className="text-sm text-slate-400">Lowest Churn (3+ Prod)</div>
                 </div>
               </div>
             </div>
