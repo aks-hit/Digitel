@@ -16,13 +16,6 @@ export interface AssessmentData {
   customerName: string;
 }
 
-export interface BusinessRule {
-  condition: string;
-  recommendation: string;
-  category: string;
-  priority: number;
-}
-
 export interface RuleResult {
   mustHave: string[];
   recommended: string[];
@@ -34,7 +27,8 @@ export interface RuleResult {
 const PERSONAS: Record<string, (d: AssessmentData) => boolean> = {
   'Remote Professional': (d) => d.wfh && d.incomeBand !== 'below-25k',
   'Digital Family': (d) => d.hasKids && d.familySize >= 3,
-  'Premium Smart Home': (d) => (d.homeType === 'villa' || d.homeType === 'penthouse') && d.monthlyBudget >= 5000,
+  'Premium Smart Home': (d) =>
+    (d.homeType === 'villa' || d.homeType === 'penthouse') && d.monthlyBudget >= 5000,
   'Senior Care Home': (d) => d.hasSeniors && d.familySize <= 3,
   'Budget Conscious': (d) => d.monthlyBudget < 2000,
   'Entertainment Hub': (d) => d.priorities.includes('entertainment'),
@@ -135,39 +129,6 @@ export function applyBusinessRules(data: AssessmentData): RuleResult {
   };
 }
 
-// Product catalog with pricing
-export const PRODUCTS = {
-  fiber: [
-    { name: 'DigiTel Fiber 40', speed: '40 Mbps', price: 499, tier: 'starter' },
-    { name: 'DigiTel Fiber 100', speed: '100 Mbps', price: 799, tier: 'essential' },
-    { name: 'DigiTel Fiber 200', speed: '200 Mbps', price: 1099, tier: 'plus' },
-    { name: 'DigiTel Fiber 500', speed: '500 Mbps', price: 1499, tier: 'premium' },
-    { name: 'DigiTel Fiber 1Gbps', speed: '1 Gbps', price: 2499, tier: 'premium' },
-  ],
-  ott: [
-    { name: 'OTT Basic', includes: ['JioCinema', 'ZEE5'], price: 199, tier: 'starter' },
-    { name: 'OTT Family', includes: ['JioCinema', 'ZEE5', 'SonyLIV', 'Disney+ Hotstar'], price: 449, tier: 'essential' },
-    { name: 'OTT Super', includes: ['JioCinema', 'ZEE5', 'SonyLIV', 'Disney+ Hotstar', 'Netflix Basic', 'Amazon Prime'], price: 799, tier: 'plus' },
-    { name: 'OTT Premium', includes: ['All OTT Platforms', 'Netflix 4K', 'Apple TV+'], price: 1299, tier: 'premium' },
-  ],
-  security: [
-    { name: 'Smart Lock', price: 299, tier: 'essential' },
-    { name: '2-Cam Kit', cameras: 2, price: 599, tier: 'essential' },
-    { name: '4-Cam Kit', cameras: 4, price: 999, tier: 'plus' },
-    { name: 'Total Security', cameras: 6, extras: ['Smart Lock', 'Video Doorbell', 'Motion Sensors'], price: 1999, tier: 'premium' },
-  ],
-  cyber: [
-    { name: 'Basic Protection', features: ['Antivirus', 'Firewall'], price: 149, tier: 'starter' },
-    { name: 'Family Shield', features: ['Antivirus', 'Parental Controls', 'Safe Browsing'], price: 299, tier: 'essential' },
-    { name: 'Total Cyber', features: ['Everything', 'VPN', 'Dark Web Monitoring', 'Identity Protection'], price: 499, tier: 'premium' },
-  ],
-  smart: [
-    { name: 'Voice Assistant', price: 199, tier: 'essential' },
-    { name: 'Smart Starter Kit', includes: ['Voice Assistant', '2 Smart Plugs', '1 Smart Bulb'], price: 499, tier: 'plus' },
-    { name: 'Smart Home Pro', includes: ['Voice Assistant', 'Smart Plugs', 'Smart Lights', 'Smart AC Control', 'Routines'], price: 999, tier: 'premium' },
-  ],
-};
-
 // Calculate Home Score
 export function calculateHomeScore(data: AssessmentData): {
   connectivity: number;
@@ -217,7 +178,11 @@ export function calculateHomeScore(data: AssessmentData): {
   automation = Math.min(automation, 100);
 
   const overall = Math.round(
-    connectivity * 0.3 + entertainment * 0.2 + security * 0.2 + cyber * 0.15 + automation * 0.15
+    connectivity * 0.3 +
+      entertainment * 0.2 +
+      security * 0.2 +
+      cyber * 0.15 +
+      automation * 0.15
   );
 
   return { connectivity, entertainment, security, cyber, automation, overall };
@@ -229,7 +194,6 @@ export function simulateImpact(households: number) {
   const crossSellUplift = 0.35;
   const churnReduction = 0.12;
   const currentChurn = 0.22;
-  const currentProducts = 1.4;
   const targetProducts = 3.2;
 
   const currentRevenue = households * avgRevenuePerHousehold * 12;
@@ -241,7 +205,7 @@ export function simulateImpact(households: number) {
   const projectedEbitda = projectedRevenue * ebitdaMargin;
   const clvIncrease = 35;
   const productsPerHousehold = targetProducts;
-  const arpu = Math.round((projectedRevenue / households) / 12);
+  const arpu = Math.round(projectedRevenue / households / 12);
 
   return {
     currentRevenue,
@@ -253,7 +217,7 @@ export function simulateImpact(households: number) {
     ebitda: projectedEbitda,
     ebitdaMargin: ebitdaMargin * 100,
     clvIncrease,
-    currentProducts,
+    currentProducts: 1.4,
     productsPerHousehold,
     arpu,
     households,
