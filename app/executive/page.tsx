@@ -253,7 +253,7 @@ export default function ExecutivePage() {
                     borderRadius: '12px',
                     color: '#f1f5f9',
                   }}
-                  formatter={(value: any) => [`${value}%`, '']}
+                  formatter={(value) => [`${value}%`, '']}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -289,7 +289,7 @@ export default function ExecutivePage() {
                     borderRadius: '12px',
                     color: '#f1f5f9',
                   }}
-                  formatter={(value: any) => [`₹${value} Cr`, '']}
+                  formatter={(value) => [`₹${value} Cr`, '']}
                 />
                 <Bar dataKey="value" radius={[0, 6, 6, 0]} name="Revenue">
                   {revenueByService.map((entry, index) => (
