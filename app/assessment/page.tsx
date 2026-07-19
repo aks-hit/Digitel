@@ -18,6 +18,7 @@ import {
   ChevronRight,
   CheckCircle2,
   User,
+  MapPin,
 } from 'lucide-react';
 
 interface StepConfig {
@@ -172,6 +173,15 @@ const STEPS: StepConfig[] = [
       { value: 'value', label: 'Best Value for Money' },
     ],
   },
+  {
+    id: 'city',
+    title: 'Where is your home located?',
+    subtitle: 'Helps us check local service availability and fiber rollout.',
+    icon: MapPin,
+    type: 'text',
+    field: 'city',
+    placeholder: 'e.g., Mumbai, Delhi, Bengaluru...',
+  },
 ];
 
 export default function AssessmentPage() {
@@ -189,7 +199,7 @@ export default function AssessmentPage() {
     currentServices: [] as string[],
     monthlyBudget: 0,
     priorities: [] as string[],
-    city: 'Mumbai',
+    city: '',
   });
 
   const step = STEPS[currentStep];

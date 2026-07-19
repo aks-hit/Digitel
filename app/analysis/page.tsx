@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Brain, Database, Shield, LineChart, Sparkles, CheckCircle2 } from 'lucide-react';
 
@@ -17,6 +17,8 @@ export default function AnalysisPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [completed, setCompleted] = useState<number[]>([]);
 
+  const hasStartedRef = useRef(false);
+
   useEffect(() => {
     // Check if assessment data exists
     const data = localStorage.getItem('digitel-assessment');
@@ -24,6 +26,9 @@ export default function AnalysisPage() {
       router.push('/assessment');
       return;
     }
+
+    if (hasStartedRef.current) return;
+    hasStartedRef.current = true;
 
     // Fetch recommendations from API
     const fetchRecommendations = async () => {
@@ -43,26 +48,38 @@ export default function AnalysisPage() {
       }
     };
 
-    fetchRecommendations();
-
     // Animate steps
-    let stepIndex = 0;
-    const runStep = () => {
-      if (stepIndex < ANALYSIS_STEPS.length) {
-        setCurrentStep(stepIndex);
-        const timeout = setTimeout(() => {
-          setCompleted((prev) => [...prev, stepIndex]);
-          stepIndex++;
-          runStep();
-        }, ANALYSIS_STEPS[stepIndex].duration);
-        return () => clearTimeout(timeout);
-      } else {
-        // All done, navigate
-        setTimeout(() => router.push('/dashboard'), 500);
-      }
+    const animateSteps = () => new Promise<void>((resolve) => {
+      let stepIndex = 0;
+      const runStep = () => {
+        if (stepIndex < ANALYSIS_STEPS.length) {
+          setCurrentStep(stepIndex);
+          setTimeout(() => {
+            setCompleted((prev) => {
+              // Ensure we don't add duplicates
+              if (!prev.includes(stepIndex)) return [...prev, stepIndex];
+              return prev;
+            });
+            stepIndex++;
+            runStep();
+          }, ANALYSIS_STEPS[stepIndex].duration);
+        } else {
+          resolve();
+        }
+      };
+      runStep();
+    });
+
+    const runAll = async () => {
+      await Promise.all([
+        fetchRecommendations(),
+        animateSteps()
+      ]);
+      // All done, navigate
+      setTimeout(() => router.push('/dashboard'), 500);
     };
 
-    runStep();
+    runAll();
   }, [router]);
 
   return (
